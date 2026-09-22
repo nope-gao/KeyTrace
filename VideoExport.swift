@@ -41,6 +41,7 @@ struct VideoExportPanel: View {
     @State private var speed=16.0
     @AppStorage("exportTimingMode") private var timingMode="speed"
     @AppStorage("exportDurationSeconds") private var targetSeconds=60
+    @AppStorage("exportShowCaptions") private var showCaptions=true
     @AppStorage("exportIncludeMouse") private var includeMouse=true
     @AppStorage("exportHeatMode") private var heatMode="dynamic"
     @AppStorage("exportSound") private var sound="keyboard"
@@ -110,6 +111,8 @@ struct VideoExportPanel: View {
                 }
                 }
                 VStack(alignment:.leading,spacing:10) {
+                    Toggle(L("显示附加文字", "Show video captions"),isOn:$showCaptions)
+                        .help(L("隐藏标题、时间和说明，保留键帽文字与次数。", "Hide titles, timestamps and notes; keep key labels and counts."))
                     Picker(L("鼠标", "Mouse"),selection:$includeMouse) {Text(L("包含", "Include")).tag(true);Text(L("不包含", "Exclude")).tag(false)}
                     Picker(L("热力上限", "Heat scale"),selection:$heatMode) {Text(L("动态变化", "Dynamic")).tag("dynamic");Text(L("固定最高次数", "Fixed peak")).tag("fixed")}
                         .help(L("动态：随回放变化；固定：采用所选时间和设备范围内的最高累计次数。", "Dynamic: follows playback. Fixed: uses the final highest count for the selected time range and devices."))
@@ -133,7 +136,7 @@ struct VideoExportPanel: View {
                     Spacer()
                     if tracker.exporting {Button(L("取消", "Cancel")) {tracker.cancelVideo()}}
                     Button(tracker.exporting ? L("正在导出…", "Exporting…") : L("导出视频到下载", "Export to Downloads")) {
-                        tracker.exportVideo(start:start,end:untilNow ? Date():end,speed:speed,layoutOverride:layoutOverride,deviceID:selectedDevice=="auto" ? nil:selectedDevice,includeMouse:includeMouse,heatMode:heatMode,sound:sound,targetDuration:timingMode == "duration" ? Double(targetSeconds):nil)
+                        tracker.exportVideo(start:start,end:untilNow ? Date():end,speed:speed,layoutOverride:layoutOverride,deviceID:selectedDevice=="auto" ? nil:selectedDevice,includeMouse:includeMouse,heatMode:heatMode,sound:sound,showCaptions:showCaptions,targetDuration:timingMode == "duration" ? Double(targetSeconds):nil)
                     }.buttonStyle(.borderedProminent).disabled(tracker.exporting || tracker.boundsLoading || invalid || outside || (timingMode == "duration" && !(6...86400).contains(targetSeconds)))
                 }
                 if tracker.exporting {ProgressView(value:tracker.exportProgress)}
@@ -154,7 +157,7 @@ extension Tracker {
         videoTask?.terminate()
         exportStatus=M("正在取消…", "Cancelling…")
     }
-    func exportVideo(start: Date,end: Date,speed: Double,layoutOverride: String,deviceID: String?,includeMouse: Bool,heatMode: String,sound: String = "keyboard",targetDuration: Double? = nil) {
+    func exportVideo(start: Date,end: Date,speed: Double,layoutOverride: String,deviceID: String?,includeMouse: Bool,heatMode: String,sound: String = "keyboard",showCaptions: Bool = true,targetDuration: Double? = nil) {
         guard !exporting else {return}
         let actualEnd=min(end,Date())
         guard start<actualEnd else {exportStatus=M("开始时间必须早于结束时间，且不能晚于现在。", "Start time must be before end time and cannot be in the future.");return}
@@ -186,7 +189,7 @@ extension Tracker {
                 let timingLabel=targetDuration.map {String(format:"%g",$0)+"s"} ?? (String(format:"%g",speed)+"x")
                 let output=downloads.appendingPathComponent("KeyTrace-\(formatter.string(from:start))-\(formatter.string(from:actualEnd))-\(timingLabel)-\(id.prefix(6)).mp4")
                 let progress=cache.appendingPathComponent("progress.json")
-                let job=VideoJob(events:events,start:start.timeIntervalSince1970,end:actualEnd.timeIntervalSince1970,speed:speed,layout:layout,deviceID:deviceID,output:output.path,progress:progress.path,includeMouse:includeMouse,heatMode:heatMode,language:exportLanguage,sound:sound,targetDuration:targetDuration)
+                let job=VideoJob(events:events,start:start.timeIntervalSince1970,end:actualEnd.timeIntervalSince1970,speed:speed,layout:layout,deviceID:deviceID,output:output.path,progress:progress.path,includeMouse:includeMouse,heatMode:heatMode,language:exportLanguage,sound:sound,showCaptions:showCaptions,targetDuration:targetDuration)
                 let jobURL=cache.appendingPathComponent("job.json")
                 try writePrivateData(JSONEncoder().encode(job),to:jobURL)
                 DispatchQueue.main.async {

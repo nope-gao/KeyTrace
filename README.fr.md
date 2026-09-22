@@ -6,6 +6,8 @@ Outil local pour macOS qui enregistre l’activité du clavier et de la souris e
 
 Adapté des fonctionnalités et des idées de [xuhk/XAssistant](https://github.com/xuhk/XAssistant), réimplémenté nativement en Swift. Cette version macOS est non officielle et n’est pas affiliée à l’auteur original. Aucun code ni élément graphique du projet Windows n’a été copié. Distribué sous [licence MIT](LICENSE).
 
+Désactivez **Afficher les textes de la vidéo** pour masquer titres, dates et notes, tout en conservant les libellés et compteurs des touches. Le dernier appui s’enfonce plus fermement et remonte lentement sans prolonger la durée choisie. Les statistiques s’ouvrent sur le bureau actuel et l’écran du pointeur depuis la barre des menus.
+
 ## Fonctionnalités
 
 - Enregistrement en arrière-plan depuis la barre des menus, statistiques quotidiennes et carte de chaleur du clavier.
@@ -19,20 +21,20 @@ Adapté des fonctionnalités et des idées de [xuhk/XAssistant](https://github.c
 
 ## Installation
 
-Bêta publique **v0.4.3-beta.1** ; app **0.4.3, build 15**. Nécessite **Apple Silicon (arm64), macOS 13+**. Intel non pris en charge. **Signature ad hoc, sans notarisation Apple ; une mise à jour peut nécessiter une nouvelle autorisation.**
+Version publiée **v1.0.0** ; app **1.0.0, build 16**. Nécessite **Apple Silicon (arm64), macOS 13+**. Intel non pris en charge. **Signature ad hoc, sans notarisation Apple ; une mise à jour peut nécessiter une nouvelle autorisation.**
 
-Téléchargez le [ZIP de l’app](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/KeyTrace-arm64.zip) et [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/SHA256SUMS) depuis la [bêta publique](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.3-beta.1), puis vérifiez avec la commande ci-dessous. Le Source code ZIP automatique n’est pas l’app. Décompressez et déplacez **KeyTrace.app** dans `~/Applications` avant de l’ouvrir.
+Téléchargez le [ZIP de l’app](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/KeyTrace-arm64.zip) et [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/SHA256SUMS) depuis la [version publiée](https://github.com/nope-gao/KeyTrace/releases/tag/v1.0.0), puis vérifiez avec la commande ci-dessous. Le Source code ZIP automatique n’est pas l’app. Décompressez et déplacez **KeyTrace.app** dans `~/Applications` avant de l’ouvrir.
 
 ```bash
 # In the folder containing the downloaded ZIP and SHA256SUMS
 awk '$2 == "KeyTrace-arm64.zip"' SHA256SUMS | shasum -a 256 -c -
 ```
 
-Installation par terminal de cette Pre-release précise, sans `/latest` :
+Installation par terminal de cette version précise, sans `/latest` :
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.3-beta.1/install.sh -o /tmp/keytrace-install.sh
-bash /tmp/keytrace-install.sh --version v0.4.3-beta.1
+curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v1.0.0/install.sh -o /tmp/keytrace-install.sh
+bash /tmp/keytrace-install.sh --version v1.0.0
 ```
 
 L’installateur vérifie SHA-256, version et signature sans sudo. Il s’arrête si l’app tourne, ne modifie pas un paquet identique et refuse une signature incompatible avant remplacement. Pour migrer, quittez et sauvegardez l’ancienne app, remplacez-la manuellement et autorisez à nouveau. Les enregistrements restent conservés.
@@ -59,7 +61,7 @@ L’interface, les menus, les messages déjà affichés, les dates et nombres, l
 
 ## Son de la vidéo
 
-Choisissez **Frappes de clavier** (par défaut), **Mécanique**, **Frappes douces** ou **Silencieux**. Chaque touche physique possède un timbre court et distinct, déclenché uniquement à l’appui et aligné sur la première image montrant cet appui. À grande vitesse, les sons rapprochés se superposent. Exclure la souris exclut aussi ses clics. Les cinq secondes finales restent silencieuses.
+Choisissez **Frappes de clavier** (par défaut), **Mécanique**, **Frappes douces** ou **Silencieux**. Chaque touche physique possède un timbre court et distinct, déclenché uniquement à l’appui et aligné sur la première image montrant cet appui. À grande vitesse, les sons rapprochés se superposent. Exclure la souris exclut aussi ses clics. Le dernier appui produit un son plus grave dont la courte résonance peut se prolonger au début des cinq secondes de rotation finale.
 
 Le son est synthétisé localement. Aucun microphone, enregistrement réel du clavier ou fichier sonore externe n’est utilisé. Les vidéos sonores contiennent une piste AAC à 48 kHz ; le mode Silencieux ne crée aucune piste audio.
 

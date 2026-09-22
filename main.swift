@@ -259,6 +259,7 @@ final class Delegate: NSObject, NSApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(rebuildMenu), name: .appLanguageChanged, object: nil)
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 620, height: 560), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
         window.title = "KeyTrace"; window.isReleasedWhenClosed = false
+        window.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
         window.contentView = NSHostingView(rootView: Dashboard(tracker: tracker)); window.center()
         if !UserDefaults.standard.bool(forKey: "hasLaunched") { show(); UserDefaults.standard.set(true, forKey: "hasLaunched") }
     }
@@ -268,7 +269,21 @@ final class Delegate: NSObject, NSApplicationDelegate {
         for (title, action) in [(L("查看统计", "Show dashboard"), #selector(show)), (L("暂停 / 继续记录", "Pause / resume recording"), #selector(pause)), (L("输入监控权限…", "Input Monitoring…"), #selector(permission)), (L("退出 KeyTrace", "Quit KeyTrace"), #selector(quit))] { let item = NSMenuItem(title: title, action: action, keyEquivalent: ""); item.target = self; menu.addItem(item) }
         status.menu = menu
     }
-    @objc func show() { window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps: true) }
+    @objc func show() {
+        // Bring the dashboard here before activating, rather than switching to its old Space.
+        if window.isMiniaturized {window.deminiaturize(nil)}
+        let pointer=NSEvent.mouseLocation
+        if let screen=NSScreen.screens.first(where:{$0.frame.contains(pointer)}) ?? NSScreen.main {
+            let area=screen.visibleFrame
+            var frame=window.frame
+            frame.size.width=min(frame.width,area.width)
+            frame.size.height=min(frame.height,area.height)
+            frame.origin=NSPoint(x:area.midX-frame.width/2,y:area.midY-frame.height/2)
+            window.setFrame(frame,display:true)
+        }
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps:true)
+    }
     @objc func pause() { tracker.togglePause(); status.button?.image = NSImage(systemSymbolName: tracker.paused ? "pause.circle" : "chart.bar.xaxis", accessibilityDescription: "KeyTrace") }
     @objc func permission() { tracker.requestInput() }
     @objc func quit() { tracker.tick(); tracker.resetInput(); tracker.save(); NSApp.terminate(nil) }

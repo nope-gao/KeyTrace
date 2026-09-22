@@ -6,6 +6,8 @@ Herramienta local para macOS que registra la actividad del teclado y el ratón y
 
 Adaptada de las funciones e ideas de [xuhk/XAssistant](https://github.com/xuhk/XAssistant), reimplementada de forma nativa en Swift. Es una versión no oficial para macOS, sin afiliación con el autor original. No se copió código ni material del proyecto de Windows. Disponible bajo la [licencia MIT](LICENSE).
 
+Desactiva **Mostrar textos del vídeo** para ocultar títulos, fechas y notas, conservando las etiquetas y los contadores. La última pulsación baja con más peso y vuelve lentamente sin alargar la duración elegida. Al abrir las estadísticas desde la barra de menús, la ventana aparece en el escritorio actual y en la pantalla del puntero.
+
 ## Funciones
 
 - Registro en segundo plano desde la barra de menús, con estadísticas diarias y mapas de calor del teclado.
@@ -19,20 +21,20 @@ Adaptada de las funciones e ideas de [xuhk/XAssistant](https://github.com/xuhk/X
 
 ## Instalación
 
-Beta pública **v0.4.3-beta.1**; app **0.4.3, build 15**. Requiere **Apple Silicon (arm64), macOS 13+**. Intel no es compatible. **Firma ad hoc, sin notarización de Apple; las actualizaciones pueden requerir autorización otra vez.**
+Versión publicada **v1.0.0**; app **1.0.0, build 16**. Requiere **Apple Silicon (arm64), macOS 13+**. Intel no es compatible. **Firma ad hoc, sin notarización de Apple; las actualizaciones pueden requerir autorización otra vez.**
 
-Descarga el [ZIP de la app](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/KeyTrace-arm64.zip) y [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/SHA256SUMS) de la [beta pública](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.3-beta.1) y comprueba la suma con el comando siguiente. El archivo Source code ZIP no es la app. Descomprime y mueve **KeyTrace.app** a `~/Applications` antes de abrirla.
+Descarga el [ZIP de la app](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/KeyTrace-arm64.zip) y [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/SHA256SUMS) de la [versión publicada](https://github.com/nope-gao/KeyTrace/releases/tag/v1.0.0) y comprueba la suma con el comando siguiente. El archivo Source code ZIP no es la app. Descomprime y mueve **KeyTrace.app** a `~/Applications` antes de abrirla.
 
 ```bash
 # In the folder containing the downloaded ZIP and SHA256SUMS
 awk '$2 == "KeyTrace-arm64.zip"' SHA256SUMS | shasum -a 256 -c -
 ```
 
-Instalación por terminal de esta Pre-release concreta, sin usar `/latest`:
+Instalación por terminal de esta versión concreta, sin usar `/latest`:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.3-beta.1/install.sh -o /tmp/keytrace-install.sh
-bash /tmp/keytrace-install.sh --version v0.4.3-beta.1
+curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v1.0.0/install.sh -o /tmp/keytrace-install.sh
+bash /tmp/keytrace-install.sh --version v1.0.0
 ```
 
 El instalador comprueba SHA-256, versión y firma sin sudo. Se detiene si la app está abierta, no cambia instalaciones idénticas y rechaza firmas incompatibles antes de reemplazar. Para migrar, cierra y respalda la app anterior, reemplázala manualmente y autoriza de nuevo. Se conservan los registros.
@@ -59,7 +61,7 @@ El idioma se aplica a la interfaz, menús, mensajes existentes, fechas y número
 
 ## Sonido del vídeo
 
-Elige **Teclado** (predeterminado), **Mecánico**, **Suave** o **Silencio**. Cada tecla física tiene un timbre corto y distinto, que se activa solo al pulsarla y coincide con el primer fotograma que muestra la pulsación. Las pulsaciones densas se mezclan a velocidades altas. Excluir el ratón también excluye sus clics. Los cinco segundos finales permanecen en silencio.
+Elige **Teclado** (predeterminado), **Mecánico**, **Suave** o **Silencio**. Cada tecla física tiene un timbre corto y distinto, que se activa solo al pulsarla y coincide con el primer fotograma que muestra la pulsación. Las pulsaciones densas se mezclan a velocidades altas. Excluir el ratón también excluye sus clics. La última pulsación tiene un tono más grave cuya breve resonancia puede continuar al inicio del giro final de cinco segundos.
 
 El audio se sintetiza localmente: no utiliza el micrófono, no graba tu teclado real ni requiere archivos de sonido externos. Los vídeos con sonido incluyen una pista AAC de 48 kHz; el modo Silencio no genera pista de audio.
 

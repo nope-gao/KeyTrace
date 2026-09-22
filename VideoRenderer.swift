@@ -16,6 +16,7 @@ struct VideoJob: Codable {
     var heatMode: String? = nil
     var language: String? = nil
     var sound: String? = nil
+    var showCaptions: Bool? = nil
     var targetDuration: Double? = nil
 }
 struct VideoFailure: Error, LocalizedError {
@@ -35,7 +36,7 @@ final class KeyboardMovie {
     var labels: [String:SCNNode]=[:]
     var caption: [String:String]=[:]
     var bases: [String:CGFloat]=[:]
-    var motions: [String:(CGFloat,CGFloat,Double)]=[:]
+    var finalPress: (visual:String,time:Double)?
     var counts: [String:Int]=[:]
     var held: Set<String>=[]
     var activeCounts: [String:Int]=[:]
@@ -159,7 +160,19 @@ final class KeyboardMovie {
         let peak=fixedPeak ?? (counts.values.max() ?? 0)
         for (id,cap) in caps {
             let pressed=activeCounts[id,default:0]>0 || framePresses.contains(id)
-            cap.position.y=(bases[id] ?? 0.5)-(pressed ? 0.18:0)
+            var depth:CGFloat=pressed ? 0.18:0
+            if let finalPress, finalPress.visual==id, time>=finalPress.time {
+                let age=time-finalPress.time
+                // A firm landing, brief weight, then a slower cushioned return.
+                // It may settle during the existing outro; never adds frames or presses.
+                if age<0.12 {depth=0.24}
+                else if age<0.64 {
+                    let p=(age-0.12)/0.52
+                    depth=CGFloat(0.24*(1-p*p*(3-2*p)))
+                } else if age<0.80 {depth=CGFloat(-0.012*sin((age-0.64)/0.16 * .pi))}
+            }
+            if pressed {depth=max(depth,0.18)}
+            cap.position.y=(bases[id] ?? 0.5)-depth
             cap.geometry?.firstMaterial?.diffuse.contents=Self.heatColor(count:counts[id,default:0],maximum:peak)
         }
         framePresses.removeAll()
@@ -179,6 +192,7 @@ final class KeyboardMovie {
         renderer.render(atTime:time,viewport:CGRect(x:0,y:0,width:width,height:height),commandBuffer:command,passDescriptor:pass)
         command.commit();command.waitUntilCompleted()
         if let error=command.error {throw error}
+        guard job.showCaptions ?? true else {return}
         CVPixelBufferLockBaseAddress(buffer,[])
         defer {CVPixelBufferUnlockBaseAddress(buffer,[])}
         guard let context=CGContext(data:CVPixelBufferGetBaseAddress(buffer),width:width,height:height,bitsPerComponent:8,bytesPerRow:CVPixelBufferGetBytesPerRow(buffer),space:CGColorSpaceCreateDeviceRGB(),bitmapInfo:CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.premultipliedFirst.rawValue) else {throw VideoFailure(message:L("无法创建文字绘图环境。", "Could not create a text drawing context."))}
@@ -211,6 +225,10 @@ final class KeyboardMovie {
         guard timeline.pressCount>0 else {throw VideoFailure(message:L("所选时间内没有可回放的按动事件。", "No replayable presses in the selected time range."))}
         guard let layout=loadLayouts()[job.layout] else {throw VideoFailure(message:L("键盘布局不存在。", "Keyboard layout not found."))}
         let movie=try KeyboardMovie(layout:layout,progress:URL(fileURLWithPath:job.progress),includeMouse:job.includeMouse ?? true)
+        if let last=timeline.events.last(where:{$0.source.down}) {
+            movie.finalPress=(last.source.kind+":"+last.source.key,
+                              ceil(max(0,last.time-0.00001)*Double(PlaybackTimeline.fps))/Double(PlaybackTimeline.fps))
+        }
         if job.heatMode == "fixed" {
             var totals:[String:Int]=[:]
             for e in timeline.events where e.source.down {

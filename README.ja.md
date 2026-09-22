@@ -6,6 +6,8 @@ macOS のキーボード・マウス操作をローカルに記録し、3D ヒ�
 
 [xuhk/XAssistant](https://github.com/xuhk/XAssistant) の機能とアイデアをもとに、Swift でネイティブに再実装しました。非公式の macOS 版であり、元の作者との提携関係はありません。上流の Windows ソースコードや素材はコピーしていません。[MIT ライセンス](LICENSE)で公開しています。
 
+「動画の説明テキストを表示」をオフにすると、タイトル・日時・説明だけを隠し、キーの文字と回数は残せます。最後の押下は重く沈んでゆっくり戻り、指定の動画時間は変わりません。メニューバーから統計を開くと、現在のデスクトップとポインタのある画面に表示されます。
+
 ## 機能
 
 - メニューバーからバックグラウンドで操作を記録し、日別の統計とキーボードヒートマップを表示。
@@ -19,20 +21,20 @@ macOS のキーボード・マウス操作をローカルに記録し、3D ヒ�
 
 ## インストール
 
-公開ベータ **v0.4.3-beta.1**、アプリ **0.4.3 / build 15**。**Apple Silicon (arm64)、macOS 13 以降**が必要です。Intel は非対応です。**アドホック署名・Apple の公証なし。更新後に再許可が必要になる場合があります。**
+正式リリース **v1.0.0**、アプリ **1.0.0 / build 16**。**Apple Silicon (arm64)、macOS 13 以降**が必要です。Intel は非対応です。**アドホック署名・Apple の公証なし。更新後に再許可が必要になる場合があります。**
 
-[公開ベータページ](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.3-beta.1) から [アプリ ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/KeyTrace-arm64.zip) と [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/SHA256SUMS) をダウンロードし、下のコマンドで検証してください。自動生成の Source code ZIP はアプリではありません。展開して **KeyTrace.app** を `~/Applications` に移してから開きます。
+[正式リリースページ](https://github.com/nope-gao/KeyTrace/releases/tag/v1.0.0) から [アプリ ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/KeyTrace-arm64.zip) と [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/SHA256SUMS) をダウンロードし、下のコマンドで検証してください。自動生成の Source code ZIP はアプリではありません。展開して **KeyTrace.app** を `~/Applications` に移してから開きます。
 
 ```bash
 # In the folder containing the downloaded ZIP and SHA256SUMS
 awk '$2 == "KeyTrace-arm64.zip"' SHA256SUMS | shasum -a 256 -c -
 ```
 
-この Pre-release を明示的に選ぶターミナルインストール（`/latest` は使いません）：
+このリリース を明示的に選ぶターミナルインストール（`/latest` は使いません）：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.3-beta.1/install.sh -o /tmp/keytrace-install.sh
-bash /tmp/keytrace-install.sh --version v0.4.3-beta.1
+curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v1.0.0/install.sh -o /tmp/keytrace-install.sh
+bash /tmp/keytrace-install.sh --version v1.0.0
 ```
 
 インストーラは SHA-256、バージョン、署名を確認し、sudo は不要です。起動中なら停止し、同じパッケージは変更しません。署名が不一致なら置換前に停止します。移行する場合は終了して旧アプリをバックアップし、手動置換と再許可を行います。記録は保持されます。
@@ -59,7 +61,7 @@ KeyTrace は独立したデータフォルダを使用し、他のアプリの�
 
 ## 動画の音
 
-「キーボード」（既定）、「メカニカル」、「ソフト」、「無音」を選択できます。各物理キーには固有の短い音色があり、押した瞬間だけ、押下を表示する最初のフレームに合わせて再生します。高速再生で密集した操作音は重ねてミックスします。マウスを除外するとクリック音も除外され、最後の 5 秒間は静かに表示します。
+「キーボード」（既定）、「メカニカル」、「ソフト」、「無音」を選択できます。各物理キーには固有の短い音色があり、押した瞬間だけ、押下を表示する最初のフレームに合わせて再生します。高速再生で密集した操作音は重ねてミックスします。マウスを除外するとクリック音も除外され、最後の押下は低めの音になり、短い余韻が 5 秒の回転エンディングの冒頭まで続く場合があります。
 
 音はローカルで合成します。マイクや実際のキーボード録音、外部音素材は使いません。有音の動画には 48 kHz AAC トラックを含め、無音では音声トラックを生成しません。
 

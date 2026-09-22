@@ -1,18 +1,16 @@
 #!/bin/bash
 set -euo pipefail
-# Explicitly select a published beta; never silently fall back to GitHub /latest.
+# Explicitly select a published release; never silently fall back to GitHub /latest.
 repo="nope-gao/KeyTrace"
-version="v0.4.3-beta.1"
+version="v1.0.0"
 case "${1:-}" in
     "") ;;
     --version) version="${2:?Missing version}"; shift 2 ;;
-    *) echo 'Usage: bash install.sh [--version v0.4.3-beta.1]' >&2; exit 1 ;;
+    *) echo 'Usage: bash install.sh [--version v1.0.0]' >&2; exit 1 ;;
 esac
 [[ $# == 0 && "$version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$ ]] || { echo 'Invalid version or arguments.' >&2; exit 1; }
-if [[ "$version" == *-beta.* ]]; then
-    echo 'Public beta: ad-hoc signed, not notarized. Updates may require Input Monitoring authorization again.'
-    echo '公开测试版：临时签名、未公证；更新可能需要重新授权。'
-fi
+echo 'Ad-hoc signed, not notarized by Apple. Updates may require Input Monitoring authorization again.'
+echo '临时签名、未经 Apple 公证；更新可能需要重新授权输入监控。'
 if [[ "$(uname -s)" != Darwin || "$(uname -m)" != arm64 ]]; then
     echo 'Requires an Apple Silicon Mac. / 需要 Apple Silicon Mac。' >&2
     exit 1
@@ -45,6 +43,7 @@ actual_tag="$(plutil -extract tag_name raw -o - "$work/release.json")"
 [[ "$actual_tag" == "$version" ]] || { echo 'Release tag mismatch.' >&2; exit 1; }
 prerelease="$(plutil -extract prerelease raw -o - "$work/release.json")"
 if [[ "$version" == *-beta.* && "$prerelease" != true ]]; then echo 'Expected a Pre-release.' >&2; exit 1; fi
+if [[ "$version" != *-beta.* && "$prerelease" != false ]]; then echo 'Expected a release, not a Pre-release.' >&2; exit 1; fi
 draft="$(plutil -extract draft raw -o - "$work/release.json")"
 [[ "$draft" == false ]] || { echo 'Refusing a draft release.' >&2; exit 1; }
 url="https://github.com/$repo/releases/download/$version"
@@ -79,7 +78,7 @@ if [[ -d "$app" ]]; then
     fi
 fi
 mkdir -p "$HOME/Applications"
-stage="$(mktemp -d "$HOME/Applications/.xassistant-install.XXXXXX")"
+stage="$(mktemp -d "$HOME/Applications/.keytrace-install.XXXXXX")"
 ditto "$sourceApp" "$stage/new.app"
 if [[ -e "$app" ]]; then mv "$app" "$stage/previous.app"; fi
 mv "$stage/new.app" "$app"

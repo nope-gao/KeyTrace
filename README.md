@@ -6,6 +6,8 @@ macOS 本地键鼠统计与 3D 热力图按动视频导出工具。
 
 改编自 [xuhk/XAssistant](https://github.com/xuhk/XAssistant) 的功能与创意，使用 Swift 原生重新实现。这是非官方 macOS 版本，未复制上游 Windows 源码或素材，与原作者无隶属关系。本项目采用 [MIT 许可证](LICENSE)。
 
+可关闭“显示附加文字”，隐藏标题、时间与说明，保留键帽文字和次数。最后一次按动更有重量感，下沉后缓慢回弹，不延长指定时长。菜单栏“查看统计”将窗口带到当前桌面和鼠标所在屏幕。
+
 ## 功能
 
 - 菜单栏后台记录键鼠按动，查看每日统计与键盘热力图。
@@ -19,20 +21,20 @@ macOS 本地键鼠统计与 3D 热力图按动视频导出工具。
 
 ## 安装
 
-公开测试版 **v0.4.3-beta.1**；应用版本 **0.4.3，build 15**。需要 **Apple Silicon（arm64）、macOS 13+**，不支持 Intel。**临时签名，未经过 Apple 公证；更新后可能需要重新授权。**
+正式发布版 **v1.0.0**；应用版本 **1.0.0，build 16**。需要 **Apple Silicon（arm64）、macOS 13+**，不支持 Intel。**临时签名，未经过 Apple 公证；更新后可能需要重新授权。**
 
-从 [公开测试版页面](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.3-beta.1) 下载 [应用 ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/KeyTrace-arm64.zip) 与 [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/SHA256SUMS)，使用下方命令校验。GitHub 自动生成的 Source code ZIP 不是应用。解压后将 **KeyTrace.app** 放入 `~/Applications`，再打开。
+从 [正式发布版页面](https://github.com/nope-gao/KeyTrace/releases/tag/v1.0.0) 下载 [应用 ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/KeyTrace-arm64.zip) 与 [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/SHA256SUMS)，使用下方命令校验。GitHub 自动生成的 Source code ZIP 不是应用。解压后将 **KeyTrace.app** 放入 `~/Applications`，再打开。
 
 ```bash
 # In the folder containing the downloaded ZIP and SHA256SUMS
 awk '$2 == "KeyTrace-arm64.zip"' SHA256SUMS | shasum -a 256 -c -
 ```
 
-终端安装（明确选择此 Pre-release，不使用 `/latest`）：
+终端安装（明确选择此版本，不使用 `/latest`）：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.3-beta.1/install.sh -o /tmp/keytrace-install.sh
-bash /tmp/keytrace-install.sh --version v0.4.3-beta.1
+curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v1.0.0/install.sh -o /tmp/keytrace-install.sh
+bash /tmp/keytrace-install.sh --version v1.0.0
 ```
 
 安装器检查 SHA-256、应用版本和签名，不需要 sudo。应用运行中会停止；已是同一包则不改动；更新签名不兼容时会在替换前停止，不自动覆盖已授权应用。需要迁移时，先退出、备份旧 app，再手动替换并重新授权；历史数据保留。
@@ -59,7 +61,7 @@ KeyTrace 使用独立的数据目录，不自动导入其他应用的记录。�
 
 ## 视频声音
 
-“声音”提供键盘敲击、机械键盘、柔和敲击、静音四种选择，默认键盘敲击。每个物理键位有确定且不同的短促音色，仅在按下时触发，并与首个显示按下的动画帧对齐。加速后的密集按动会叠加混音；选择不包含鼠标时也不会混入鼠标点击声。片尾保留安静的 5 秒展示。
+“声音”提供键盘敲击、机械键盘、柔和敲击、静音四种选择，默认键盘敲击。每个物理键位有确定且不同的短促音色，仅在按下时触发，并与首个显示按下的动画帧对齐。加速后的密集按动会叠加混音；选择不包含鼠标时也不会混入鼠标点击声。最后一下使用更低沉的音色，余音可能延续到 5 秒旋转片尾的开头。
 
 声音由程序合成，不使用麦克风，不采集真实键盘录音，也不依赖外部音效素材。有声导出使用 48 kHz AAC 音轨；静音模式不生成音轨。
 

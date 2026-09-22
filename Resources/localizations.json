@@ -155,7 +155,9 @@
     "Total seconds": "Total seconds",
     "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.": "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.",
     "Choose a speed from 0.5× to 1024×.": "Choose a speed from 0.5× to 1024×.",
-    "Total duration must be 6–86400 seconds.": "Total duration must be 6–86400 seconds."
+    "Total duration must be 6–86400 seconds.": "Total duration must be 6–86400 seconds.",
+    "Show video captions": "Show video captions",
+    "Hide titles, timestamps and notes; keep key labels and counts.": "Hide titles, timestamps and notes; keep key labels and counts."
   },
   "zh-Hans": {
     "Unidentified keyboard": "来源未识别的键盘",
@@ -313,7 +315,9 @@
     "Total seconds": "总时长（秒）",
     "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.": "自动加速或减速，含最后 5 秒旋转；可设 6–86400 秒。",
     "Choose a speed from 0.5× to 1024×.": "请选择 0.5× 到 1024× 的速度。",
-    "Total duration must be 6–86400 seconds.": "总时长须为 6–86400 秒。"
+    "Total duration must be 6–86400 seconds.": "总时长须为 6–86400 秒。",
+    "Show video captions": "显示附加文字",
+    "Hide titles, timestamps and notes; keep key labels and counts.": "隐藏标题、时间和说明，保留键帽文字与次数。"
   },
   "ja": {
     "Unidentified keyboard": "不明なキーボード",
@@ -471,7 +475,9 @@
     "Total seconds": "合計（秒）",
     "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.": "自動で加速・減速します。最後の5秒を含め、6〜86400秒で指定できます。",
     "Choose a speed from 0.5× to 1024×.": "0.5×〜1024×の速度を選択してください。",
-    "Total duration must be 6–86400 seconds.": "合計時間は6〜86400秒で指定してください。"
+    "Total duration must be 6–86400 seconds.": "合計時間は6〜86400秒で指定してください。",
+    "Show video captions": "動画の説明テキストを表示",
+    "Hide titles, timestamps and notes; keep key labels and counts.": "タイトル、日時、説明を非表示にし、キーの文字と回数は残します。"
   },
   "es": {
     "Unidentified keyboard": "Teclado no identificado",
@@ -629,7 +635,9 @@
     "Total seconds": "Total de segundos",
     "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.": "Acelera o ralentiza automáticamente, incluidos los 5 segundos finales; elige entre 6 y 86400 segundos.",
     "Choose a speed from 0.5× to 1024×.": "Elige una velocidad entre 0.5× y 1024×.",
-    "Total duration must be 6–86400 seconds.": "La duración total debe ser de 6 a 86400 segundos."
+    "Total duration must be 6–86400 seconds.": "La duración total debe ser de 6 a 86400 segundos.",
+    "Show video captions": "Mostrar textos del vídeo",
+    "Hide titles, timestamps and notes; keep key labels and counts.": "Oculta títulos, fechas y notas; conserva las etiquetas y los contadores de las teclas."
   },
   "fr": {
     "Unidentified keyboard": "Clavier non identifié",
@@ -787,7 +795,9 @@
     "Total seconds": "Durée totale (s)",
     "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.": "Accélère ou ralentit automatiquement, avec les 5 secondes finales ; choisissez de 6 à 86400 secondes.",
     "Choose a speed from 0.5× to 1024×.": "Choisissez une vitesse entre 0.5× et 1024×.",
-    "Total duration must be 6–86400 seconds.": "La durée totale doit être comprise entre 6 et 86400 secondes."
+    "Total duration must be 6–86400 seconds.": "La durée totale doit être comprise entre 6 et 86400 secondes.",
+    "Show video captions": "Afficher les textes de la vidéo",
+    "Hide titles, timestamps and notes; keep key labels and counts.": "Masque les titres, dates et notes ; conserve les libellés et compteurs des touches."
   },
   "de": {
     "Unidentified keyboard": "Nicht erkanntes Keyboard",
@@ -945,6 +955,8 @@
     "Total seconds": "Gesamtdauer (s)",
     "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.": "Automatische Beschleunigung oder Verlangsamung, inklusive 5 Sekunden Abspann; 6–86400 Sekunden.",
     "Choose a speed from 0.5× to 1024×.": "Wähle eine Geschwindigkeit von 0.5× bis 1024×.",
-    "Total duration must be 6–86400 seconds.": "Die Gesamtdauer muss 6–86400 Sekunden betragen."
+    "Total duration must be 6–86400 seconds.": "Die Gesamtdauer muss 6–86400 Sekunden betragen.",
+    "Show video captions": "Videotexte anzeigen",
+    "Hide titles, timestamps and notes; keep key labels and counts.": "Titel, Zeitangaben und Hinweise ausblenden; Tastenbeschriftungen und Zähler bleiben sichtbar."
   }
 }

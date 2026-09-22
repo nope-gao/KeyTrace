@@ -17,7 +17,7 @@ enum ClickSound:String,CaseIterable,Identifiable {
 // Deterministic synthesis from physical key IDs. No microphone or external audio assets.
 final class KeyClickSynth {
     static let sampleRate=48_000
-    let events:[(sample:Int,voice:String)]
+    let events:[(sample:Int,voice:String,heavy:Bool)]
     let preset:ClickSound
     private var cursor=0
     private var position=0
@@ -26,19 +26,20 @@ final class KeyClickSynth {
     private(set) var triggered=0
     init(timeline:PlaybackTimeline,preset:ClickSound) {
         self.preset=preset
-        events=timeline.events.filter { $0.source.down }.map {event in
+        let presses=timeline.events.filter { $0.source.down }
+        events=presses.enumerated().map {index,event in
             // Match the first video frame showing this press, including fast/chord groups.
             let frame=Int(ceil(max(0,event.time-0.00001)*Double(PlaybackTimeline.fps)))
-            return (frame*Self.sampleRate/PlaybackTimeline.fps,event.source.kind+":"+event.source.key)
+            return (frame*Self.sampleRate/PlaybackTimeline.fps,event.source.kind+":"+event.source.key,index==presses.count-1)
         }
     }
-    static func waveform(key:String,preset:ClickSound) -> [Float] {
+    static func waveform(key:String,preset:ClickSound,heavy:Bool = false) -> [Float] {
         guard preset != .silent else {return []}
         var seed:UInt64=14695981039346656037
         for byte in key.utf8 {seed=(seed ^ UInt64(byte)) &* 1099511628211}
         let hash=seed
-        let seconds=preset == .mechanical ? 0.065:(preset == .soft ? 0.035:0.045)
-        let frequency=Double(250+hash%1700)*(preset == .soft ? 0.55:1)
+        let seconds=(preset == .mechanical ? 0.065:(preset == .soft ? 0.035:0.045))*(heavy ? 2.4:1)
+        let frequency=Double(250+hash%1700)*(preset == .soft ? 0.55:1)*(heavy ? 0.58:1)
         let resonance=Double(1800+(hash>>12)%4000)
         let count=Int(seconds*Double(sampleRate))
         var filtered=0.0
@@ -53,7 +54,8 @@ final class KeyClickSynth {
             let ring=sin(2*Double.pi*resonance*t)*exp(-t/0.003)
             let level=preset == .soft ? 0.22:0.40
             let noiseLevel=preset == .soft ? 0.3:(preset == .mechanical ? 1.1:0.8)
-            return Float(attack*level*(body*0.45+click*noiseLevel+ring*0.12))
+            let weight=heavy ? 0.28*sin(2*Double.pi*110*t)*exp(-t/0.035):0
+            return Float(attack*level*(body*(heavy ? 0.75:0.45)+click*noiseLevel+ring*0.12+weight))
         }
     }
     func samples(count:Int) -> [Float] {
@@ -61,8 +63,9 @@ final class KeyClickSynth {
         guard preset != .silent else {position+=count;return output}
         while cursor<events.count && events[cursor].sample<position+count {
             let event=events[cursor]
-            if cache[event.voice] == nil {cache[event.voice]=Self.waveform(key:event.voice,preset:preset)}
-            voices.append((cache[event.voice]!,event.sample-position))
+            let cacheKey=event.voice+(event.heavy ? ":final":"")
+            if cache[cacheKey] == nil {cache[cacheKey]=Self.waveform(key:event.voice,preset:preset,heavy:event.heavy)}
+            voices.append((cache[cacheKey]!,event.sample-position))
             cursor+=1;triggered+=1
         }
         var remaining:[(sound:[Float],offset:Int)]=[]

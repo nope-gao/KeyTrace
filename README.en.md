@@ -6,6 +6,8 @@ A local macOS keyboard and mouse activity tracker with animated 3D heatmap video
 
 Adapted from the functionality and ideas of [xuhk/XAssistant](https://github.com/xuhk/XAssistant), reimplemented natively in Swift. This is an unofficial macOS version; no upstream Windows source code or assets were copied, and this project is not affiliated with the original author. Licensed under the [MIT License](LICENSE).
 
+Turn off **Show video captions** to hide titles, timestamps and notes while keeping key labels and counts. The last press lands more firmly and returns slowly without extending the requested duration. **Show dashboard** brings the window to the current desktop and the display under the pointer.
+
 ## Features
 
 - Track keyboard and mouse activity in the background from the menu bar, with daily statistics and keyboard heatmaps.
@@ -19,20 +21,20 @@ Adapted from the functionality and ideas of [xuhk/XAssistant](https://github.com
 
 ## Install
 
-Public beta **v0.4.3-beta.1**; app **0.4.3, build 15**. Requires **Apple Silicon (arm64), macOS 13+**. Intel is unsupported. **Ad-hoc signed, not notarized by Apple; updates may require authorization again.**
+Release **v1.0.0**; app **1.0.0, build 16**. Requires **Apple Silicon (arm64), macOS 13+**. Intel is unsupported. **Ad-hoc signed, not notarized by Apple; updates may require authorization again.**
 
-Download the [app ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/KeyTrace-arm64.zip) and [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/SHA256SUMS) from the [public beta page](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.3-beta.1); verify using the command below. GitHub’s automatic Source code ZIP is not the app. Unzip and move **KeyTrace.app** to `~/Applications` before opening it.
+Download the [app ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/KeyTrace-arm64.zip) and [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/SHA256SUMS) from the [release page](https://github.com/nope-gao/KeyTrace/releases/tag/v1.0.0); verify using the command below. GitHub’s automatic Source code ZIP is not the app. Unzip and move **KeyTrace.app** to `~/Applications` before opening it.
 
 ```bash
 # In the folder containing the downloaded ZIP and SHA256SUMS
 awk '$2 == "KeyTrace-arm64.zip"' SHA256SUMS | shasum -a 256 -c -
 ```
 
-Terminal installation explicitly selects this Pre-release, never `/latest`:
+Terminal installation explicitly selects this release, never `/latest`:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.3-beta.1/install.sh -o /tmp/keytrace-install.sh
-bash /tmp/keytrace-install.sh --version v0.4.3-beta.1
+curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v1.0.0/install.sh -o /tmp/keytrace-install.sh
+bash /tmp/keytrace-install.sh --version v1.0.0
 ```
 
 The installer checks SHA-256, app version and signing compatibility without sudo. It stops while the app is running, leaves identical installations untouched, and refuses incompatible signature changes before replacement. To migrate, quit and back up the old app, replace it manually and authorize again. Recordings remain in place.
@@ -59,7 +61,7 @@ The interface, menus, existing status messages, dates and numbers, mouse labels,
 
 ## Video sound
 
-Choose **Keyboard taps** (default), **Mechanical**, **Soft taps**, or **Silent**. Each physical key has a distinct, deterministic short timbre, triggered only on key down and aligned to the first animation frame showing the press. Dense presses overlap at higher speeds. Excluding the mouse also excludes its click sounds. The five-second outro remains quiet.
+Choose **Keyboard taps** (default), **Mechanical**, **Soft taps**, or **Silent**. Each physical key has a distinct, deterministic short timbre, triggered only on key down and aligned to the first animation frame showing the press. Dense presses overlap at higher speeds. Excluding the mouse also excludes its click sounds. The last press has a deeper tone whose short decay may extend into the start of the five-second rotating outro.
 
 Audio is synthesized locally. It does not use the microphone, record your real keyboard, or depend on external sound assets. Sound-enabled videos contain a 48 kHz AAC track; Silent exports have no audio track.
 

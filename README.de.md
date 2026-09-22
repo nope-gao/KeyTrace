@@ -6,6 +6,8 @@ Lokales macOS-Werkzeug zum Aufzeichnen von Tastatur- und Mausaktivität und zum 
 
 Die Funktionen und Ideen stammen von [xuhk/XAssistant](https://github.com/xuhk/XAssistant) und wurden nativ in Swift neu umgesetzt. Dies ist eine inoffizielle macOS-Version ohne Verbindung zum ursprünglichen Autor. Quellcode und Grafiken des Windows-Projekts wurden nicht kopiert. Veröffentlicht unter der [MIT-Lizenz](LICENSE).
 
+Deaktiviere **Videotexte anzeigen**, um Titel, Zeitangaben und Hinweise auszublenden; Tastenbeschriftungen und Zähler bleiben sichtbar. Der letzte Anschlag senkt sich kräftiger und kehrt langsam zurück, ohne die gewählte Dauer zu verlängern. Die Statistik öffnet sich über die Menüleiste auf dem aktuellen Schreibtisch und dem Bildschirm unter dem Mauszeiger.
+
 ## Funktionen
 
 - Aufzeichnung im Hintergrund über die Menüleiste, mit Tagesstatistik und Tastatur-Heatmap.
@@ -19,20 +21,20 @@ Die Funktionen und Ideen stammen von [xuhk/XAssistant](https://github.com/xuhk/X
 
 ## Installation
 
-Öffentliche Beta **v0.4.3-beta.1**; App **0.4.3, Build 15**. Erfordert **Apple Silicon (arm64), macOS 13+**. Intel wird nicht unterstützt. **Ad-hoc-signiert, nicht von Apple notarisiert; Updates können eine erneute Freigabe erfordern.**
+Veröffentlichung **v1.0.0**; App **1.0.0, Build 16**. Erfordert **Apple Silicon (arm64), macOS 13+**. Intel wird nicht unterstützt. **Ad-hoc-signiert, nicht von Apple notarisiert; Updates können eine erneute Freigabe erfordern.**
 
-Lade das [App-ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/KeyTrace-arm64.zip) und [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/SHA256SUMS) von der [öffentlichen Beta](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.3-beta.1) und prüfe sie mit dem folgenden Befehl. Das automatisch erzeugte Source code ZIP ist nicht die App. Entpacke **KeyTrace.app** und verschiebe sie vor dem Öffnen nach `~/Applications`.
+Lade das [App-ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/KeyTrace-arm64.zip) und [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/SHA256SUMS) von der [Veröffentlichung](https://github.com/nope-gao/KeyTrace/releases/tag/v1.0.0) und prüfe sie mit dem folgenden Befehl. Das automatisch erzeugte Source code ZIP ist nicht die App. Entpacke **KeyTrace.app** und verschiebe sie vor dem Öffnen nach `~/Applications`.
 
 ```bash
 # In the folder containing the downloaded ZIP and SHA256SUMS
 awk '$2 == "KeyTrace-arm64.zip"' SHA256SUMS | shasum -a 256 -c -
 ```
 
-Terminal-Installation dieser konkreten Pre-release, ohne `/latest`:
+Terminal-Installation dieser konkreten Version, ohne `/latest`:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.3-beta.1/install.sh -o /tmp/keytrace-install.sh
-bash /tmp/keytrace-install.sh --version v0.4.3-beta.1
+curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v1.0.0/install.sh -o /tmp/keytrace-install.sh
+bash /tmp/keytrace-install.sh --version v1.0.0
 ```
 
 Der Installer prüft SHA-256, Version und Signatur ohne sudo. Bei laufender App stoppt er, identische Installationen bleiben unverändert und inkompatible Signaturen werden vor dem Ersetzen abgewiesen. Zur Migration die alte App beenden und sichern, manuell ersetzen und erneut freigeben. Aufzeichnungen bleiben erhalten.
@@ -59,7 +61,7 @@ Oberfläche, Menüs, bereits angezeigte Meldungen, Datums- und Zahlenformate, Ma
 
 ## Videoklang
 
-Wähle **Tastenanschläge** (Standard), **Mechanisch**, **Sanfte Anschläge** oder **Stumm**. Jede physische Taste hat eine eigene kurze Klangfarbe. Der Klang wird nur beim Drücken ausgelöst und auf das erste Videobild mit dem sichtbaren Anschlag ausgerichtet. Bei hoher Geschwindigkeit überlagern sich dicht aufeinanderfolgende Klänge. Ohne Maus werden auch keine Mausklicks vertont. Die letzten fünf Sekunden bleiben still.
+Wähle **Tastenanschläge** (Standard), **Mechanisch**, **Sanfte Anschläge** oder **Stumm**. Jede physische Taste hat eine eigene kurze Klangfarbe. Der Klang wird nur beim Drücken ausgelöst und auf das erste Videobild mit dem sichtbaren Anschlag ausgerichtet. Bei hoher Geschwindigkeit überlagern sich dicht aufeinanderfolgende Klänge. Ohne Maus werden auch keine Mausklicks vertont. Der letzte Anschlag klingt tiefer; sein kurzer Nachhall kann in den Beginn der fünfsekündigen Kameradrehung reichen.
 
 Der Ton wird lokal synthetisiert. Mikrofon, Aufnahmen deiner echten Tastatur und externe Klangdateien werden nicht verwendet. Videos mit Ton enthalten eine AAC-Spur mit 48 kHz; Stumm erzeugt keine Audiospur.
 

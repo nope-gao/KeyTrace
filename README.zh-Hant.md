@@ -6,6 +6,8 @@ macOS 本地鍵鼠統計與 3D 熱力圖按動影片導出工具。
 
 改編自 [xuhk/XAssistant](https://github.com/xuhk/XAssistant) 的功能與創意，使用 Swift 原生重新實現。這是非官方 macOS 版本，未複製上游 Windows 原始碼或素材，與原作者無隸屬關係。本項目採用 [MIT 許可證](LICENSE)。
 
+可關閉「顯示附加文字」，隱藏標題、時間與說明，保留鍵帽文字和次數。最後一次按動更有重量感，下沉後緩慢回彈，不延長指定時長。選單列「查看統計」將視窗帶到目前桌面和滑鼠所在螢幕。
+
 ## 功能
 
 - 菜單欄後台記錄鍵鼠按動，查看每日統計與鍵盤熱力圖。
@@ -19,20 +21,20 @@ macOS 本地鍵鼠統計與 3D 熱力圖按動影片導出工具。
 
 ## 安裝
 
-公開測試版 **v0.4.3-beta.1**；應用程式 **0.4.3，build 15**。需要 **Apple Silicon（arm64）、macOS 13+**，不支援 Intel。**臨時簽名，未經 Apple 公證；更新後可能需要重新授權。**
+正式發佈版 **v1.0.0**；應用程式 **1.0.0，build 16**。需要 **Apple Silicon（arm64）、macOS 13+**，不支援 Intel。**臨時簽名，未經 Apple 公證；更新後可能需要重新授權。**
 
-從 [公開測試版頁面](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.3-beta.1) 下載 [應用 ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/KeyTrace-arm64.zip) 與 [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/SHA256SUMS)，使用下方命令校驗。GitHub 自動產生的 Source code ZIP 不是應用程式。解壓後將 **KeyTrace.app** 放入 `~/Applications` 再開啟。
+從 [正式發佈版頁面](https://github.com/nope-gao/KeyTrace/releases/tag/v1.0.0) 下載 [應用 ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/KeyTrace-arm64.zip) 與 [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v1.0.0/SHA256SUMS)，使用下方命令校驗。GitHub 自動產生的 Source code ZIP 不是應用程式。解壓後將 **KeyTrace.app** 放入 `~/Applications` 再開啟。
 
 ```bash
 # In the folder containing the downloaded ZIP and SHA256SUMS
 awk '$2 == "KeyTrace-arm64.zip"' SHA256SUMS | shasum -a 256 -c -
 ```
 
-終端安裝明確選擇此 Pre-release，不使用 `/latest`：
+終端安裝明確選擇此版本，不使用 `/latest`：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.3-beta.1/install.sh -o /tmp/keytrace-install.sh
-bash /tmp/keytrace-install.sh --version v0.4.3-beta.1
+curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v1.0.0/install.sh -o /tmp/keytrace-install.sh
+bash /tmp/keytrace-install.sh --version v1.0.0
 ```
 
 安裝器檢查 SHA-256、版本與簽名，不需要 sudo。應用執行中會停止；相同套件不變更；不相容的簽名會在替換前被阻止。需要遷移時先退出並備份舊 app，再手動替換及重新授權；歷史資料保留。
@@ -59,7 +61,7 @@ KeyTrace 使用獨立的資料目錄，不會自動匯入其他應用程式的�
 
 ## 影片聲音
 
-“聲音”提供鍵盤敲擊、機械鍵盤、柔和敲擊、靜音四種選擇，默認鍵盤敲擊。每個物理鍵位有確定且不同的短促音色，僅在按下時觸發，並與首個顯示按下的動畫幀對齊。加速後的密集按動會疊加混音；選擇不包含滑鼠時也不會混入滑鼠點擊聲。片尾保留安靜的 5 秒展示。
+“聲音”提供鍵盤敲擊、機械鍵盤、柔和敲擊、靜音四種選擇，默認鍵盤敲擊。每個物理鍵位有確定且不同的短促音色，僅在按下時觸發，並與首個顯示按下的動畫幀對齊。加速後的密集按動會疊加混音；選擇不包含滑鼠時也不會混入滑鼠點擊聲。最後一下使用更低沉的音色，餘音可能延續到 5 秒旋轉片尾的開頭。
 
 聲音由程序合成，不使用麥克風，不採集真實鍵盤錄音，也不依賴外部音效素材。有聲導出使用 48 kHz AAC 音軌；靜音模式不生成音軌。
 
