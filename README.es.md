@@ -12,16 +12,16 @@ Adaptada de las funciones e ideas de [xuhk/XAssistant](https://github.com/xuhk/X
 - Detección de teclados integrados y externos, con distribuciones MacBook y Mac de tamaño completo y selección manual.
 - Selección de inicio y fin, con accesos a la primera grabación y a la hora actual.
 - Exportación de pulsaciones animadas y mapas acumulativos como MP4 de 1080p a 30 fps en Descargas, comprimiendo automáticamente los intervalos inactivos.
-- Inclusión o exclusión del ratón; velocidades de 0.5× a 256×, incluida 128×.
+- Inclusión o exclusión del ratón; velocidades de 0.5× a 1024×, incluida 128× / 256× / 512×.
 - Escala de color dinámica según el mayor recuento acumulado actual, o fija según el mayor total final del intervalo seleccionado.
 - La imagen final permanece cinco segundos mientras la cámara gira lentamente.
 - Sonido sincronizado en cada pulsación, distinto para cada tecla física, con perfiles de teclado, mecánico, suave o silencio.
 
 ## Instalación
 
-Beta pública **v0.4.2-beta.1**; app **0.4.2, build 14**. Requiere **Apple Silicon (arm64), macOS 13+**. Intel no es compatible. **Firma ad hoc, sin notarización de Apple; las actualizaciones pueden requerir autorización otra vez.**
+Beta pública **v0.4.3-beta.1**; app **0.4.3, build 15**. Requiere **Apple Silicon (arm64), macOS 13+**. Intel no es compatible. **Firma ad hoc, sin notarización de Apple; las actualizaciones pueden requerir autorización otra vez.**
 
-Descarga el [ZIP de la app](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.2-beta.1/KeyTrace-arm64.zip) y [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.2-beta.1/SHA256SUMS) de la [beta pública](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.2-beta.1) y comprueba la suma con el comando siguiente. El archivo Source code ZIP no es la app. Descomprime y mueve **KeyTrace.app** a `~/Applications` antes de abrirla.
+Descarga el [ZIP de la app](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/KeyTrace-arm64.zip) y [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/SHA256SUMS) de la [beta pública](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.3-beta.1) y comprueba la suma con el comando siguiente. El archivo Source code ZIP no es la app. Descomprime y mueve **KeyTrace.app** a `~/Applications` antes de abrirla.
 
 ```bash
 # In the folder containing the downloaded ZIP and SHA256SUMS
@@ -31,8 +31,8 @@ awk '$2 == "KeyTrace-arm64.zip"' SHA256SUMS | shasum -a 256 -c -
 Instalación por terminal de esta Pre-release concreta, sin usar `/latest`:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.2-beta.1/install.sh -o /tmp/keytrace-install.sh
-bash /tmp/keytrace-install.sh --version v0.4.2-beta.1
+curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.3-beta.1/install.sh -o /tmp/keytrace-install.sh
+bash /tmp/keytrace-install.sh --version v0.4.3-beta.1
 ```
 
 El instalador comprueba SHA-256, versión y firma sin sudo. Se detiene si la app está abierta, no cambia instalaciones idénticas y rechaza firmas incompatibles antes de reemplazar. Para migrar, cierra y respalda la app anterior, reemplázala manualmente y autoriza de nuevo. Se conservan los registros.
@@ -46,6 +46,10 @@ tccutil reset ListenEvent app.keytrace.mac
 ```
 
 KeyTrace usa una carpeta de datos independiente y no importa automáticamente registros de otras apps. Activa Supervisión de entrada en la primera instalación.
+
+## Duración fija
+
+Elige **Duración fija** para definir la duración total, por defecto **60 segundos (1 minuto)**, incluidos los **5 segundos finales de giro**. Las acciones se aceleran o ralentizan automáticamente tras eliminar las pausas. Admite de 6 a 86400 segundos.
 
 ## Idioma
 

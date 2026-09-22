@@ -39,6 +39,8 @@ struct VideoExportPanel: View {
     @State private var fromBeginning=true
     @State private var untilNow=true
     @State private var speed=16.0
+    @AppStorage("exportTimingMode") private var timingMode="speed"
+    @AppStorage("exportDurationSeconds") private var targetSeconds=60
     @AppStorage("exportIncludeMouse") private var includeMouse=true
     @AppStorage("exportHeatMode") private var heatMode="dynamic"
     @AppStorage("exportSound") private var sound="keyboard"
@@ -80,12 +82,32 @@ struct VideoExportPanel: View {
                         Button(L("现在", "Now")) {untilNow=true}.fixedSize().help(L("导出时自动取最新时间", "Use the current time when exporting"))
                     }
                 }.disabled(tracker.exporting || first==nil)
+                VStack(alignment:.leading,spacing:10) {
                 HStack {
                     Text(untilNow ? L("结束时间跟随现在", "End time follows now") : L("已固定结束时间", "End time is fixed")).font(.caption).foregroundStyle(.secondary)
                     Spacer()
-                    Picker(L("速度", "Speed"),selection:$speed) {
-                        ForEach([0.5,1.0,2.0,4.0,8.0,16.0,32.0,64.0,128.0,256.0],id:\.self) {Text(String(format:"%g×",$0)).tag($0)}
-                    }.frame(minWidth:135).disabled(tracker.exporting)
+                }
+                HStack {
+                    Picker(L("播放方式", "Playback mode"),selection:$timingMode) {
+                        Text(L("倍速", "Speed multiplier")).tag("speed")
+                        Text(L("固定时长", "Fixed duration")).tag("duration")
+                    }.pickerStyle(.segmented).frame(width:240)
+                    Spacer()
+                    if timingMode == "duration" {
+                        Text(L("总时长（秒）", "Total seconds")).font(.caption)
+                        TextField("60",value:$targetSeconds,format:.number.grouping(.never))
+                            .frame(width:65).textFieldStyle(.roundedBorder)
+                            .accessibilityLabel(L("总时长（秒）", "Total seconds"))
+                    } else {
+                        Picker(L("速度", "Speed"),selection:$speed) {
+                            ForEach([0.5,1.0,2.0,4.0,8.0,16.0,32.0,64.0,128.0,256.0,512.0,1024.0],id:\.self) {Text(String(format:"%g×",$0)).tag($0)}
+                        }.frame(width:150)
+                    }
+                }.disabled(tracker.exporting)
+                if timingMode == "duration" {
+                    Text(L("自动加速或减速，含最后 5 秒旋转；可设 6–86400 秒。", "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds."))
+                        .font(.caption).foregroundStyle((6...86400).contains(targetSeconds) ? Color.secondary:Color.orange)
+                }
                 }
                 VStack(alignment:.leading,spacing:10) {
                     Picker(L("鼠标", "Mouse"),selection:$includeMouse) {Text(L("包含", "Include")).tag(true);Text(L("不包含", "Exclude")).tag(false)}
@@ -111,8 +133,8 @@ struct VideoExportPanel: View {
                     Spacer()
                     if tracker.exporting {Button(L("取消", "Cancel")) {tracker.cancelVideo()}}
                     Button(tracker.exporting ? L("正在导出…", "Exporting…") : L("导出视频到下载", "Export to Downloads")) {
-                        tracker.exportVideo(start:start,end:untilNow ? Date():end,speed:speed,layoutOverride:layoutOverride,deviceID:selectedDevice=="auto" ? nil:selectedDevice,includeMouse:includeMouse,heatMode:heatMode,sound:sound)
-                    }.buttonStyle(.borderedProminent).disabled(tracker.exporting || tracker.boundsLoading || invalid || outside)
+                        tracker.exportVideo(start:start,end:untilNow ? Date():end,speed:speed,layoutOverride:layoutOverride,deviceID:selectedDevice=="auto" ? nil:selectedDevice,includeMouse:includeMouse,heatMode:heatMode,sound:sound,targetDuration:timingMode == "duration" ? Double(targetSeconds):nil)
+                    }.buttonStyle(.borderedProminent).disabled(tracker.exporting || tracker.boundsLoading || invalid || outside || (timingMode == "duration" && !(6...86400).contains(targetSeconds)))
                 }
                 if tracker.exporting {ProgressView(value:tracker.exportProgress)}
                 if !tracker.exportStatus.isEmpty {
@@ -132,11 +154,12 @@ extension Tracker {
         videoTask?.terminate()
         exportStatus=M("正在取消…", "Cancelling…")
     }
-    func exportVideo(start: Date,end: Date,speed: Double,layoutOverride: String,deviceID: String?,includeMouse: Bool,heatMode: String,sound: String = "keyboard") {
+    func exportVideo(start: Date,end: Date,speed: Double,layoutOverride: String,deviceID: String?,includeMouse: Bool,heatMode: String,sound: String = "keyboard",targetDuration: Double? = nil) {
         guard !exporting else {return}
         let actualEnd=min(end,Date())
         guard start<actualEnd else {exportStatus=M("开始时间必须早于结束时间，且不能晚于现在。", "Start time must be before end time and cannot be in the future.");return}
-        guard speed.isFinite && speed>=0.5 && speed<=256 else {exportStatus=M("请选择 0.5× 到 256× 的速度。", "Choose a speed from 0.5× to 256×.");return}
+        guard speed.isFinite && speed>=0.5 && speed<=1024 else {exportStatus=M("请选择 0.5× 到 1024× 的速度。", "Choose a speed from 0.5× to 1024×.");return}
+        if let targetDuration, !targetDuration.isFinite || targetDuration<6 || targetDuration>86400 {exportStatus=M("总时长须为 6–86400 秒。", "Total duration must be 6–86400 seconds.");return}
         lastVideoURL=nil;exporting=true;exportCancelled=false;exportProgress=0;exportStatus=M("正在读取所选时间内的键盘和鼠标按动…", "Reading activity in the selected time range…")
         save()
         let exportLanguage=AppLanguage.current
@@ -146,7 +169,7 @@ extension Tracker {
         DispatchQueue.global(qos:.userInitiated).async { [weak self] in
             do {
                 let events=try store.load(start:start,end:actualEnd)
-                let timeline=PlaybackTimeline(events:events,start:start.timeIntervalSince1970,end:actualEnd.timeIntervalSince1970,speed:speed,deviceID:deviceID,includeMouse:includeMouse)
+                let timeline=PlaybackTimeline(events:events,start:start.timeIntervalSince1970,end:actualEnd.timeIntervalSince1970,speed:speed,deviceID:deviceID,includeMouse:includeMouse,targetDuration:targetDuration)
                 guard timeline.pressCount>0 else {throw VideoFailure(message:L("这段时间没有可回放的按动记录。请开启输入监控后实际操作键鼠，再选择对应时间；旧总次数不能生成动画。", "No replayable presses in this range. Enable Input Monitoring and use your keyboard or mouse first. Old aggregate counts cannot produce an animation."))}
                 var layout=layoutOverride
                 if layout=="auto" {
@@ -160,9 +183,10 @@ extension Tracker {
                 let formatter=DateFormatter();formatter.dateFormat="yyyyMMdd-HHmmss"
                 let downloads=fm.homeDirectoryForCurrentUser.appendingPathComponent("Downloads")
                 try fm.createDirectory(at:downloads,withIntermediateDirectories:true)
-                let output=downloads.appendingPathComponent("KeyTrace-\(formatter.string(from:start))-\(formatter.string(from:actualEnd))-\(String(format:"%g",speed))x-\(id.prefix(6)).mp4")
+                let timingLabel=targetDuration.map {String(format:"%g",$0)+"s"} ?? (String(format:"%g",speed)+"x")
+                let output=downloads.appendingPathComponent("KeyTrace-\(formatter.string(from:start))-\(formatter.string(from:actualEnd))-\(timingLabel)-\(id.prefix(6)).mp4")
                 let progress=cache.appendingPathComponent("progress.json")
-                let job=VideoJob(events:events,start:start.timeIntervalSince1970,end:actualEnd.timeIntervalSince1970,speed:speed,layout:layout,deviceID:deviceID,output:output.path,progress:progress.path,includeMouse:includeMouse,heatMode:heatMode,language:exportLanguage,sound:sound)
+                let job=VideoJob(events:events,start:start.timeIntervalSince1970,end:actualEnd.timeIntervalSince1970,speed:speed,layout:layout,deviceID:deviceID,output:output.path,progress:progress.path,includeMouse:includeMouse,heatMode:heatMode,language:exportLanguage,sound:sound,targetDuration:targetDuration)
                 let jobURL=cache.appendingPathComponent("job.json")
                 try writePrivateData(JSONEncoder().encode(job),to:jobURL)
                 DispatchQueue.main.async {

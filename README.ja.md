@@ -12,16 +12,16 @@ macOS のキーボード・マウス操作をローカルに記録し、3D ヒ�
 - 内蔵・外付けキーボードを検出。MacBook とテンキー付き Mac キーボードの配列を用意し、手動選択にも対応。
 - 開始・終了日時を選択。「最初」「現在」のショートカットを使用可能。
 - キーの押下アニメーションと累積ヒートマップを 1080p・30 fps の MP4 に書き出し、「ダウンロード」に保存。操作のない時間を自動で短縮。
-- マウスを含めるか選択でき、速度は 0.5×〜256×（128×を含む）に対応。
+- マウスを含めるか選択でき、速度は 0.5×〜1024×（128× / 256× / 512×を含む）に対応。
 - 色の上限を再生時点の最大累積回数に追従させるか、選択期間の最終最大回数に固定。
 - 最後のヒートマップを 5 秒間表示しながら、カメラをゆっくり回転。
 - 各物理キーに異なる音色を割り当て、押下に同期して再生。キーボード、メカニカル、ソフト、無音から選択可能。
 
 ## インストール
 
-公開ベータ **v0.4.2-beta.1**、アプリ **0.4.2 / build 14**。**Apple Silicon (arm64)、macOS 13 以降**が必要です。Intel は非対応です。**アドホック署名・Apple の公証なし。更新後に再許可が必要になる場合があります。**
+公開ベータ **v0.4.3-beta.1**、アプリ **0.4.3 / build 15**。**Apple Silicon (arm64)、macOS 13 以降**が必要です。Intel は非対応です。**アドホック署名・Apple の公証なし。更新後に再許可が必要になる場合があります。**
 
-[公開ベータページ](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.2-beta.1) から [アプリ ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.2-beta.1/KeyTrace-arm64.zip) と [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.2-beta.1/SHA256SUMS) をダウンロードし、下のコマンドで検証してください。自動生成の Source code ZIP はアプリではありません。展開して **KeyTrace.app** を `~/Applications` に移してから開きます。
+[公開ベータページ](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.3-beta.1) から [アプリ ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/KeyTrace-arm64.zip) と [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/SHA256SUMS) をダウンロードし、下のコマンドで検証してください。自動生成の Source code ZIP はアプリではありません。展開して **KeyTrace.app** を `~/Applications` に移してから開きます。
 
 ```bash
 # In the folder containing the downloaded ZIP and SHA256SUMS
@@ -31,8 +31,8 @@ awk '$2 == "KeyTrace-arm64.zip"' SHA256SUMS | shasum -a 256 -c -
 この Pre-release を明示的に選ぶターミナルインストール（`/latest` は使いません）：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.2-beta.1/install.sh -o /tmp/keytrace-install.sh
-bash /tmp/keytrace-install.sh --version v0.4.2-beta.1
+curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.3-beta.1/install.sh -o /tmp/keytrace-install.sh
+bash /tmp/keytrace-install.sh --version v0.4.3-beta.1
 ```
 
 インストーラは SHA-256、バージョン、署名を確認し、sudo は不要です。起動中なら停止し、同じパッケージは変更しません。署名が不一致なら置換前に停止します。移行する場合は終了して旧アプリをバックアップし、手動置換と再許可を行います。記録は保持されます。
@@ -46,6 +46,10 @@ tccutil reset ListenEvent app.keytrace.mac
 ```
 
 KeyTrace は独立したデータフォルダを使用し、他のアプリの記録を自動で取り込みません。初回インストール時に入力監視を許可してください。
+
+## 固定時間
+
+「固定時間」で動画の合計秒数を指定できます。初期値は **60秒（1分）**で、最後の**5秒のカメラ回転**を含みます。空白時間を除いた操作を自動で加速・減速します。6〜86400秒に対応します。
 
 ## 表示言語
 

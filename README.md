@@ -12,16 +12,16 @@ macOS 本地键鼠统计与 3D 热力图按动视频导出工具。
 - 识别内置、外接键盘，提供 MacBook 与带数字区的 Mac 键盘布局，并可手动选择。
 - 选择开始、结束时间，支持“最开始”和“现在”快捷操作。
 - 将键位按动动画和累计热力图导出为 1080p、30 fps MP4，保存到“下载”文件夹；自动压缩无操作间隔。
-- 可选择包含或不包含鼠标，速度支持 0.5× 至 256×（含 128×）。
+- 可选择包含或不包含鼠标，速度支持 0.5× 至 1024×（含 128× / 256× / 512×）。
 - 热力图上限可随当前累计最高按动数动态变化，或固定为所选范围内最终最高按动数。
 - 片尾保留最终热力图 5 秒，摄像机缓慢旋转。
 - 每次按下都有同步敲击声，不同物理键位使用不同音色；支持键盘敲击（默认）、机械键盘、柔和敲击和静音。
 
 ## 安装
 
-公开测试版 **v0.4.2-beta.1**；应用版本 **0.4.2，build 14**。需要 **Apple Silicon（arm64）、macOS 13+**，不支持 Intel。**临时签名，未经过 Apple 公证；更新后可能需要重新授权。**
+公开测试版 **v0.4.3-beta.1**；应用版本 **0.4.3，build 15**。需要 **Apple Silicon（arm64）、macOS 13+**，不支持 Intel。**临时签名，未经过 Apple 公证；更新后可能需要重新授权。**
 
-从 [公开测试版页面](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.2-beta.1) 下载 [应用 ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.2-beta.1/KeyTrace-arm64.zip) 与 [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.2-beta.1/SHA256SUMS)，使用下方命令校验。GitHub 自动生成的 Source code ZIP 不是应用。解压后将 **KeyTrace.app** 放入 `~/Applications`，再打开。
+从 [公开测试版页面](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.3-beta.1) 下载 [应用 ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/KeyTrace-arm64.zip) 与 [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/SHA256SUMS)，使用下方命令校验。GitHub 自动生成的 Source code ZIP 不是应用。解压后将 **KeyTrace.app** 放入 `~/Applications`，再打开。
 
 ```bash
 # In the folder containing the downloaded ZIP and SHA256SUMS
@@ -31,8 +31,8 @@ awk '$2 == "KeyTrace-arm64.zip"' SHA256SUMS | shasum -a 256 -c -
 终端安装（明确选择此 Pre-release，不使用 `/latest`）：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.2-beta.1/install.sh -o /tmp/keytrace-install.sh
-bash /tmp/keytrace-install.sh --version v0.4.2-beta.1
+curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.3-beta.1/install.sh -o /tmp/keytrace-install.sh
+bash /tmp/keytrace-install.sh --version v0.4.3-beta.1
 ```
 
 安装器检查 SHA-256、应用版本和签名，不需要 sudo。应用运行中会停止；已是同一包则不改动；更新签名不兼容时会在替换前停止，不自动覆盖已授权应用。需要迁移时，先退出、备份旧 app，再手动替换并重新授权；历史数据保留。
@@ -46,6 +46,10 @@ tccutil reset ListenEvent app.keytrace.mac
 ```
 
 KeyTrace 使用独立的数据目录，不自动导入其他应用的记录。首次安装需要单独开启输入监控。
+
+## 固定时长
+
+选择“固定时长”可指定视频总秒数，默认 **60 秒（1 分钟）**，包含最后 **5 秒旋转**。程序对去除空档后的按动自动加速或减速，适配指定时长；支持 6–86400 秒。
 
 ## 界面语言
 

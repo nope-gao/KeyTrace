@@ -16,6 +16,7 @@ struct VideoJob: Codable {
     var heatMode: String? = nil
     var language: String? = nil
     var sound: String? = nil
+    var targetDuration: Double? = nil
 }
 struct VideoFailure: Error, LocalizedError {
     var message: String
@@ -42,7 +43,7 @@ final class KeyboardMovie {
     var fixedPeak: Int?
     var cameraCenter=SCNVector3Zero
     var cameraStart=SCNVector3Zero
-    static let outroSeconds=5
+    static let outroSeconds=PlaybackTimeline.outroSeconds
     static func totalFrames(_ timeline: PlaybackTimeline) -> Int {timeline.frameCount+outroSeconds*PlaybackTimeline.fps}
     func orbit(progress: Double) {
         guard let camera=renderer.pointOfView else {return}
@@ -200,9 +201,13 @@ final class KeyboardMovie {
         text(L("已播放 \(seenPresses) 次按动", "\(seenPresses) presses played") + "  ·  \(String(format:"%g",job.speed))×  ·  " + L("空档已移除", "Idle gaps removed"),70,42,22)
 
     }
-    static func render(_ job: VideoJob) throws {
+    static func render(_ inputJob: VideoJob) throws {
+        var job=inputJob
         AppLanguage.renderLanguage = AppLanguage.resolve(job.language ?? UserDefaults.standard.string(forKey:"appLanguage"), preferred: AppLanguage.systemLanguages)
-        let timeline=PlaybackTimeline(events:job.events,start:job.start,end:job.end,speed:job.speed,deviceID:job.deviceID,includeMouse:job.includeMouse ?? true)
+        guard job.speed.isFinite && job.speed>=0.5 && job.speed<=1024 else {throw VideoFailure(message:L("请选择 0.5× 到 1024× 的速度。", "Choose a speed from 0.5× to 1024×."))}
+        if let target=job.targetDuration, !target.isFinite || target<6 || target>86400 {throw VideoFailure(message:L("总时长须为 6–86400 秒。", "Total duration must be 6–86400 seconds."))}
+        let timeline=PlaybackTimeline(events:job.events,start:job.start,end:job.end,speed:job.speed,deviceID:job.deviceID,includeMouse:job.includeMouse ?? true,targetDuration:job.targetDuration)
+        job.speed=timeline.playbackSpeed
         guard timeline.pressCount>0 else {throw VideoFailure(message:L("所选时间内没有可回放的按动事件。", "No replayable presses in the selected time range."))}
         guard let layout=loadLayouts()[job.layout] else {throw VideoFailure(message:L("键盘布局不存在。", "Keyboard layout not found."))}
         let movie=try KeyboardMovie(layout:layout,progress:URL(fileURLWithPath:job.progress),includeMouse:job.includeMouse ?? true)

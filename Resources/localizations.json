@@ -77,7 +77,6 @@
     "Show file": "Show file",
     "Cancelling…": "Cancelling…",
     "Start time must be before end time and cannot be in the future.": "Start time must be before end time and cannot be in the future.",
-    "Choose a speed from 0.5× to 256×.": "Choose a speed from 0.5× to 256×.",
     "Reading activity in the selected time range…": "Reading activity in the selected time range…",
     "No replayable presses in this range. Enable Input Monitoring and use your keyboard or mouse first. Old aggregate counts cannot produce an animation.": "No replayable presses in this range. Enable Input Monitoring and use your keyboard or mouse first. Old aggregate counts cannot produce an animation.",
     "Cancelled.": "Cancelled.",
@@ -149,7 +148,14 @@
     "⇧": "⇧",
     "Space": "Space",
     "Tab": "Tab",
-    "External keyboard": "External keyboard"
+    "External keyboard": "External keyboard",
+    "Playback mode": "Playback mode",
+    "Speed multiplier": "Speed multiplier",
+    "Fixed duration": "Fixed duration",
+    "Total seconds": "Total seconds",
+    "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.": "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.",
+    "Choose a speed from 0.5× to 1024×.": "Choose a speed from 0.5× to 1024×.",
+    "Total duration must be 6–86400 seconds.": "Total duration must be 6–86400 seconds."
   },
   "zh-Hans": {
     "Unidentified keyboard": "来源未识别的键盘",
@@ -225,7 +231,6 @@
     "Show file": "显示文件",
     "Cancelling…": "正在取消…",
     "Start time must be before end time and cannot be in the future.": "开始时间必须早于结束时间，且不能晚于现在。",
-    "Choose a speed from 0.5× to 256×.": "请选择 0.5× 到 256× 的速度。",
     "Reading activity in the selected time range…": "正在读取所选时间内的键盘和鼠标按动…",
     "No replayable presses in this range. Enable Input Monitoring and use your keyboard or mouse first. Old aggregate counts cannot produce an animation.": "这段时间没有可回放的按动记录。请开启输入监控后实际操作键鼠，再选择对应时间；旧总次数不能生成动画。",
     "Cancelled.": "已取消。",
@@ -301,7 +306,14 @@
     "⇧": "⇧",
     "Space": "空格",
     "Tab": "制表",
-    "External keyboard": "外接键盘"
+    "External keyboard": "外接键盘",
+    "Playback mode": "播放方式",
+    "Speed multiplier": "倍速",
+    "Fixed duration": "固定时长",
+    "Total seconds": "总时长（秒）",
+    "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.": "自动加速或减速，含最后 5 秒旋转；可设 6–86400 秒。",
+    "Choose a speed from 0.5× to 1024×.": "请选择 0.5× 到 1024× 的速度。",
+    "Total duration must be 6–86400 seconds.": "总时长须为 6–86400 秒。"
   },
   "ja": {
     "Unidentified keyboard": "不明なキーボード",
@@ -381,7 +393,6 @@
     "Show file": "ファイルを表示",
     "Cancelling…": "キャンセル中…",
     "Start time must be before end time and cannot be in the future.": "開始日時は終了日時より前で、現在より後にはできません。",
-    "Choose a speed from 0.5× to 256×.": "0.5×～256× の速度を選択してください。",
     "Reading activity in the selected time range…": "選択期間の操作を読み込み中…",
     "No replayable presses in this range. Enable Input Monitoring and use your keyboard or mouse first. Old aggregate counts cannot produce an animation.": "この期間に再生可能な操作はありません。入力監視を有効にして操作してください。過去の合計値からアニメーションは生成できません。",
     "Cancelled.": "キャンセルしました。",
@@ -453,7 +464,14 @@
     "⇧": "⇧",
     "Space": "スペース",
     "Tab": "タブ",
-    "External keyboard": "外付けキーボード"
+    "External keyboard": "外付けキーボード",
+    "Playback mode": "再生モード",
+    "Speed multiplier": "再生速度",
+    "Fixed duration": "固定時間",
+    "Total seconds": "合計（秒）",
+    "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.": "自動で加速・減速します。最後の5秒を含め、6〜86400秒で指定できます。",
+    "Choose a speed from 0.5× to 1024×.": "0.5×〜1024×の速度を選択してください。",
+    "Total duration must be 6–86400 seconds.": "合計時間は6〜86400秒で指定してください。"
   },
   "es": {
     "Unidentified keyboard": "Teclado no identificado",
@@ -533,7 +551,6 @@
     "Show file": "Mostrar archivo",
     "Cancelling…": "Cancelando…",
     "Start time must be before end time and cannot be in the future.": "El inicio debe ser anterior al fin y no puede estar en el futuro.",
-    "Choose a speed from 0.5× to 256×.": "Elige una velocidad entre 0.5× y 256×.",
     "Reading activity in the selected time range…": "Leyendo la actividad del intervalo seleccionado…",
     "No replayable presses in this range. Enable Input Monitoring and use your keyboard or mouse first. Old aggregate counts cannot produce an animation.": "No hay pulsaciones reproducibles en este intervalo. Activa la monitorización de entrada y usa el teclado o el ratón. Los totales antiguos no permiten generar animaciones.",
     "Cancelled.": "Cancelado.",
@@ -605,7 +622,14 @@
     "⇧": "⇧",
     "Space": "Espacio",
     "Tab": "Tab",
-    "External keyboard": "Teclado externo"
+    "External keyboard": "Teclado externo",
+    "Playback mode": "Modo de reproducción",
+    "Speed multiplier": "Multiplicador",
+    "Fixed duration": "Duración fija",
+    "Total seconds": "Total de segundos",
+    "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.": "Acelera o ralentiza automáticamente, incluidos los 5 segundos finales; elige entre 6 y 86400 segundos.",
+    "Choose a speed from 0.5× to 1024×.": "Elige una velocidad entre 0.5× y 1024×.",
+    "Total duration must be 6–86400 seconds.": "La duración total debe ser de 6 a 86400 segundos."
   },
   "fr": {
     "Unidentified keyboard": "Clavier non identifié",
@@ -685,7 +709,6 @@
     "Show file": "Afficher le fichier",
     "Cancelling…": "Annulation…",
     "Start time must be before end time and cannot be in the future.": "Le début doit précéder la fin et ne peut pas être dans le futur.",
-    "Choose a speed from 0.5× to 256×.": "Choisissez une vitesse de 0.5× à 256×.",
     "Reading activity in the selected time range…": "Lecture de l’activité de la période sélectionnée…",
     "No replayable presses in this range. Enable Input Monitoring and use your keyboard or mouse first. Old aggregate counts cannot produce an animation.": "Aucun appui à reproduire. Activez la surveillance de l’entrée, puis utilisez le clavier ou la souris. Les anciens totaux ne permettent pas de créer une animation.",
     "Cancelled.": "Annulé.",
@@ -757,7 +780,14 @@
     "⇧": "⇧",
     "Space": "Espace",
     "Tab": "Tab",
-    "External keyboard": "Clavier externe"
+    "External keyboard": "Clavier externe",
+    "Playback mode": "Mode de lecture",
+    "Speed multiplier": "Vitesse",
+    "Fixed duration": "Durée fixe",
+    "Total seconds": "Durée totale (s)",
+    "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.": "Accélère ou ralentit automatiquement, avec les 5 secondes finales ; choisissez de 6 à 86400 secondes.",
+    "Choose a speed from 0.5× to 1024×.": "Choisissez une vitesse entre 0.5× et 1024×.",
+    "Total duration must be 6–86400 seconds.": "La durée totale doit être comprise entre 6 et 86400 secondes."
   },
   "de": {
     "Unidentified keyboard": "Nicht erkanntes Keyboard",
@@ -837,7 +867,6 @@
     "Show file": "Datei anzeigen",
     "Cancelling…": "Wird abgebrochen…",
     "Start time must be before end time and cannot be in the future.": "Die Startzeit muss vor der Endzeit liegen und darf nicht in der Zukunft sein.",
-    "Choose a speed from 0.5× to 256×.": "Wähle ein Tempo von 0.5× bis 256×.",
     "Reading activity in the selected time range…": "Aktivität im gewählten Zeitraum wird gelesen…",
     "No replayable presses in this range. Enable Input Monitoring and use your keyboard or mouse first. Old aggregate counts cannot produce an animation.": "Keine abspielbaren Anschläge. Aktiviere die Eingabeüberwachung und benutze Tastatur oder Maus. Aus alten Gesamtzahlen lässt sich keine Animation erstellen.",
     "Cancelled.": "Abgebrochen.",
@@ -909,6 +938,13 @@
     "⇧": "⇧",
     "Space": "Leertaste",
     "Tab": "Tab",
-    "External keyboard": "Externe Tastatur"
+    "External keyboard": "Externe Tastatur",
+    "Playback mode": "Wiedergabemodus",
+    "Speed multiplier": "Geschwindigkeit",
+    "Fixed duration": "Feste Dauer",
+    "Total seconds": "Gesamtdauer (s)",
+    "Automatically speeds up or slows down, including the 5-second outro; choose 6–86400 seconds.": "Automatische Beschleunigung oder Verlangsamung, inklusive 5 Sekunden Abspann; 6–86400 Sekunden.",
+    "Choose a speed from 0.5× to 1024×.": "Wähle eine Geschwindigkeit von 0.5× bis 1024×.",
+    "Total duration must be 6–86400 seconds.": "Die Gesamtdauer muss 6–86400 Sekunden betragen."
   }
 }

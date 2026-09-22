@@ -12,16 +12,16 @@ Die Funktionen und Ideen stammen von [xuhk/XAssistant](https://github.com/xuhk/X
 - Erkennung integrierter und externer Tastaturen; MacBook- und Mac-Vollformatlayouts mit manueller Auswahl.
 - Start- und Endzeit mit Kurzbefehlen zur ersten Aufzeichnung und zur aktuellen Zeit.
 - Export animierter Anschläge und kumulierter Heatmaps als MP4 mit 1080p und 30 Bildern/s in Downloads; Leerlauf wird automatisch verkürzt.
-- Maus ein- oder ausschließen; Geschwindigkeiten von 0.5× bis 256×, einschließlich 128×.
+- Maus ein- oder ausschließen; Geschwindigkeiten von 0.5× bis 1024×, einschließlich 128× / 256× / 512×.
 - Dynamische Farbskala anhand der aktuell höchsten kumulierten Anzahl oder feste Skala anhand des endgültigen Maximums im gewählten Zeitraum.
 - Fünf Sekunden Schlussbild mit langsam rotierender Kamera.
 - Synchroner Klang für jeden Anschlag mit unterschiedlicher Klangfarbe pro physischer Taste; Tastatur-, mechanischer, sanfter oder stummer Modus.
 
 ## Installation
 
-Öffentliche Beta **v0.4.2-beta.1**; App **0.4.2, Build 14**. Erfordert **Apple Silicon (arm64), macOS 13+**. Intel wird nicht unterstützt. **Ad-hoc-signiert, nicht von Apple notarisiert; Updates können eine erneute Freigabe erfordern.**
+Öffentliche Beta **v0.4.3-beta.1**; App **0.4.3, Build 15**. Erfordert **Apple Silicon (arm64), macOS 13+**. Intel wird nicht unterstützt. **Ad-hoc-signiert, nicht von Apple notarisiert; Updates können eine erneute Freigabe erfordern.**
 
-Lade das [App-ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.2-beta.1/KeyTrace-arm64.zip) und [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.2-beta.1/SHA256SUMS) von der [öffentlichen Beta](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.2-beta.1) und prüfe sie mit dem folgenden Befehl. Das automatisch erzeugte Source code ZIP ist nicht die App. Entpacke **KeyTrace.app** und verschiebe sie vor dem Öffnen nach `~/Applications`.
+Lade das [App-ZIP](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/KeyTrace-arm64.zip) und [SHA256SUMS](https://github.com/nope-gao/KeyTrace/releases/download/v0.4.3-beta.1/SHA256SUMS) von der [öffentlichen Beta](https://github.com/nope-gao/KeyTrace/releases/tag/v0.4.3-beta.1) und prüfe sie mit dem folgenden Befehl. Das automatisch erzeugte Source code ZIP ist nicht die App. Entpacke **KeyTrace.app** und verschiebe sie vor dem Öffnen nach `~/Applications`.
 
 ```bash
 # In the folder containing the downloaded ZIP and SHA256SUMS
@@ -31,8 +31,8 @@ awk '$2 == "KeyTrace-arm64.zip"' SHA256SUMS | shasum -a 256 -c -
 Terminal-Installation dieser konkreten Pre-release, ohne `/latest`:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.2-beta.1/install.sh -o /tmp/keytrace-install.sh
-bash /tmp/keytrace-install.sh --version v0.4.2-beta.1
+curl -fsSL https://raw.githubusercontent.com/nope-gao/KeyTrace/v0.4.3-beta.1/install.sh -o /tmp/keytrace-install.sh
+bash /tmp/keytrace-install.sh --version v0.4.3-beta.1
 ```
 
 Der Installer prüft SHA-256, Version und Signatur ohne sudo. Bei laufender App stoppt er, identische Installationen bleiben unverändert und inkompatible Signaturen werden vor dem Ersetzen abgewiesen. Zur Migration die alte App beenden und sichern, manuell ersetzen und erneut freigeben. Aufzeichnungen bleiben erhalten.
@@ -46,6 +46,10 @@ tccutil reset ListenEvent app.keytrace.mac
 ```
 
 KeyTrace verwendet einen eigenen Datenordner und importiert keine Aufzeichnungen anderer Apps automatisch. Erlaube bei der ersten Installation die Eingabeüberwachung.
+
+## Feste Dauer
+
+Mit **Feste Dauer** legst du die Gesamtlänge fest, standardmäßig **60 Sekunden (1 Minute)** einschließlich **5 Sekunden Kameradrehung** am Ende. Nach dem Entfernen von Pausen werden Aktionen automatisch beschleunigt oder verlangsamt. Möglich sind 6–86400 Sekunden.
 
 ## Sprache
 

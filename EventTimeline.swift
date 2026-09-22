@@ -104,8 +104,11 @@ struct PlaybackTimeline {
     let events: [PlaybackEvent]
     let duration: Double
     let pressCount: Int
+    let playbackSpeed: Double
+    private var exactFrameCount: Int? = nil
     static let fps=30
-    init(events input: [InputEvent], start: Double, end: Double, speed: Double, deviceID: String? = nil, includeMouse: Bool = true) {
+    static let outroSeconds=5
+    init(events input: [InputEvent], start: Double, end: Double, speed: Double, deviceID: String? = nil, includeMouse: Bool = true, targetDuration: Double? = nil) {
         var normalized: [InputEvent]=[]
         var held: [String:InputEvent]=[:]
         for event in input.enumerated().sorted(by: { $0.element.t == $1.element.t ? $0.offset < $1.offset : $0.element.t < $1.element.t }).map(\.element) {
@@ -129,16 +132,27 @@ struct PlaybackTimeline {
                 let delta=max(0,e.t-prev.t)
                 // Simultaneous chord edges stay simultaneous, except opposite edges of the same key.
                 if delta > 0.012 || e.control == prev.control {
-                    outputTime += max(2.0/Double(Self.fps),min(delta,0.24))/max(0.25,speed)
+                    outputTime += max(2.0/Double(Self.fps),min(delta,0.24))/(targetDuration == nil ? max(0.25,speed):1)
                 }
             }
             compact.append(PlaybackEvent(time:outputTime,source:e)); previous=e
         }
-        events=compact
         pressCount=compact.filter { $0.source.down }.count
-        duration=compact.isEmpty ? 0 : outputTime+3.0/Double(Self.fps)
+        if let targetDuration, targetDuration.isFinite, targetDuration>=6, targetDuration<=86400, !compact.isEmpty {
+            let frames=Int((targetDuration*Double(Self.fps)).rounded())-Self.outroSeconds*Self.fps
+            let span=Double(frames-3)/Double(Self.fps)
+            let scale=outputTime>0 ? span/outputTime:1
+            events=compact.map {PlaybackEvent(time:$0.time*scale,source:$0.source)}
+            duration=Double(frames)/Double(Self.fps)
+            exactFrameCount=frames
+            playbackSpeed=outputTime>0 ? outputTime/span:1
+        } else {
+            events=compact
+            duration=compact.isEmpty ? 0 : outputTime+3.0/Double(Self.fps)
+            playbackSpeed=speed
+        }
     }
-    var frameCount: Int { Int(ceil(duration*Double(Self.fps))) }
+    var frameCount: Int { exactFrameCount ?? Int(ceil(duration*Double(Self.fps))) }
 }
 
 // Physical macOS virtual key -> USB HID key usage. No character translation is performed.

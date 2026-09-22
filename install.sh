@@ -2,11 +2,11 @@
 set -euo pipefail
 # Explicitly select a published beta; never silently fall back to GitHub /latest.
 repo="nope-gao/KeyTrace"
-version="v0.4.2-beta.1"
+version="v0.4.3-beta.1"
 case "${1:-}" in
     "") ;;
     --version) version="${2:?Missing version}"; shift 2 ;;
-    *) echo 'Usage: bash install.sh [--version v0.4.2-beta.1]' >&2; exit 1 ;;
+    *) echo 'Usage: bash install.sh [--version v0.4.3-beta.1]' >&2; exit 1 ;;
 esac
 [[ $# == 0 && "$version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$ ]] || { echo 'Invalid version or arguments.' >&2; exit 1; }
 if [[ "$version" == *-beta.* ]]; then
