@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" fill="none">
+  <title>KeyTrace</title>
+  <desc>A graphite rounded square with a silver keyboard and a single blue activity key.</desc>
+  <defs>
+    <linearGradient id="tile" x1="512" y1="64" x2="512" y2="960" gradientUnits="userSpaceOnUse"><stop stop-color="#343C49"/><stop offset="1" stop-color="#1C222C"/></linearGradient>
+    <linearGradient id="metal" x1="512" y1="292" x2="512" y2="750" gradientUnits="userSpaceOnUse"><stop stop-color="#FAFBFD"/><stop offset="1" stop-color="#CBD2DC"/></linearGradient>
+    <linearGradient id="blue" x1="582" y1="414" x2="652" y2="502" gradientUnits="userSpaceOnUse"><stop stop-color="#70C7FF"/><stop offset="1" stop-color="#3786F5"/></linearGradient>
+  </defs>
+  <rect x="64" y="76" width="896" height="884" rx="200" fill="#0D1119" fill-opacity=".16"/>
+  <rect x="64" y="64" width="896" height="884" rx="200" fill="url(#tile)"/>
+  <rect x="65" y="65" width="894" height="882" rx="199" stroke="#FFFFFF" stroke-opacity=".12" stroke-width="2"/>
+  <rect x="193" y="321" width="638" height="418" rx="68" fill="#0D1119" fill-opacity=".45"/>
+  <rect x="193" y="293" width="638" height="418" rx="68" fill="url(#metal)"/>
+  <rect x="227" y="327" width="570" height="350" rx="38" fill="#303946"/>
+  <g fill="#E9EDF3">
+    <rect x="259" y="360" width="78" height="74" rx="15"/>
+    <rect x="366" y="360" width="78" height="74" rx="15"/>
+    <rect x="473" y="360" width="78" height="74" rx="15"/>
+    <rect x="687" y="360" width="78" height="74" rx="15"/>
+    <rect x="259" y="466" width="78" height="74" rx="15"/>
+    <rect x="366" y="466" width="78" height="74" rx="15"/>
+    <rect x="473" y="466" width="78" height="74" rx="15"/>
+    <rect x="580" y="466" width="78" height="74" rx="15"/>
+    <rect x="687" y="466" width="78" height="74" rx="15"/>
+    <rect x="259" y="572" width="78" height="72" rx="15"/>
+    <rect x="366" y="572" width="292" height="72" rx="15"/>
+    <rect x="687" y="572" width="78" height="72" rx="15"/>
+  </g>
+  <rect x="580" y="360" width="78" height="74" rx="15" fill="url(#blue)"/>
+</svg>

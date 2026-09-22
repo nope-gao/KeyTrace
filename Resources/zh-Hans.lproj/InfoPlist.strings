@@ -1,0 +1,1 @@
+"NSInputMonitoringUsageDescription" = "在本机保存键鼠按下与松开的时间和键位，用于动画回放；键位顺序可能推断输入内容。";
